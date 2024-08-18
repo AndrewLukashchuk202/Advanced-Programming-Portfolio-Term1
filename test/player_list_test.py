@@ -16,7 +16,8 @@ class PlayerListTest(unittest.TestCase):
         player_list.push(player_node)
 
         self.assertFalse(player_list.is_empty)
-        self.assertEqual(player_list._head, player_node)
+        self.assertEqual(player_list.head, player_node)
+        self.assertEqual(player_list.tail, player_node)
 
     def test_push_multiple_nodes(self):
         player1 = Player("1", "Andrew")
@@ -31,7 +32,17 @@ class PlayerListTest(unittest.TestCase):
         player_list.push(player_node2)
 
         self.assertFalse(player_list.is_empty)
-        self.assertEqual(player_list._head, player_node2)
+        self.assertEqual(player_list.head, player_node2)
+        self.assertEqual(player_list.tail, player_node1)
+        self.assertEqual(player_list.head.player_next_node, player_node1)
+        self.assertEqual(player_list.tail.player_prev_node, player_node2)
+
+    def test_empty_list(self):
+        player_list = PlayerList()
+
+        self.assertTrue(player_list.is_empty)
+        self.assertIsNone(player_list.head)
+        self.assertIsNone(player_list.tail)
 
 
 if __name__ == "__main__":
