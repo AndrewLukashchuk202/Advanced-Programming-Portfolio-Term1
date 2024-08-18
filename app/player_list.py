@@ -24,14 +24,21 @@ class PlayerList:
     def tail(self) -> Optional[PlayerNode]:
         return self._tail
 
-    def push(self, player_node: PlayerNode):
-        new_player_node = player_node
-
-        if self._is_empty:
-            self._head = self._tail = new_player_node
+    def push_front(self, player_node: PlayerNode):
+        if self.is_empty:
+            self._head = self._tail = player_node
+            self._is_empty = False
         else:
-            new_player_node.player_next_node = self._head
-            self._head.player_prev_node = new_player_node
-            self._head = new_player_node
+            player_node.player_next_node = self._head
+            self._head.player_prev_node = player_node
+            self._head = player_node
 
-        self._is_empty = False
+    def push_back(self, player_node: PlayerNode):
+        if self.is_empty:
+            self._head = self._tail = player_node
+            self._is_empty = False
+        else:
+            player_node.player_prev_node = self._tail
+            self._tail.player_next_node = player_node
+            self._tail = player_node
+

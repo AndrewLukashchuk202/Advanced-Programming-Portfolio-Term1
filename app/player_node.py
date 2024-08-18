@@ -18,7 +18,7 @@ class PlayerNode:
         return self._player
 
     @property
-    def player_next_node(self) -> PlayerNode:
+    def player_next_node(self) -> Optional[PlayerNode]:
         return self._player_next_node
 
     @player_next_node.setter
@@ -26,7 +26,7 @@ class PlayerNode:
         self._player_next_node = player_next_node
 
     @property
-    def player_prev_node(self) -> PlayerNode:
+    def player_prev_node(self) -> Optional[PlayerNode]:
         return self._player_prev_node
 
     @player_prev_node.setter
@@ -38,9 +38,9 @@ class PlayerNode:
         return self._player.uid
 
     def __str__(self) -> str:
-        return (f"PlayerNode(player={self._player},"
-                f"next_node={self._player_next_node},"
-                f"previous_node={self._player_prev_node})")
+        return (f"PlayerNode(player={self._player}, "
+                f"next_node_id={id(self._player_next_node)}, "
+                f"prev_node_id={id(self._player_prev_node)})")
 
 
 if __name__ == '__main__':
