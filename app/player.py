@@ -11,11 +11,9 @@ class Player:
     def name(self) -> str:
         return self._player_name
 
-    def __str__(self):
-        class_name = self.__class__.__name__
-        return (f"class name={class_name}, "
-                f"player name={self._player_name}, "
-                f"player id={self._player_id}")
+    def __str__(self) -> str:
+        return (f"Player(player_name={self._player_name}, "
+                f"player_id={self._player_id})")
 
 
 
