@@ -1,9 +1,13 @@
 from __future__ import annotations
-
 from player import Player
+from typing import Optional
 
 
 class PlayerNode:
+    _player = Player
+    _player_next_node: Optional[PlayerNode]
+    _player_prev_node: Optional[PlayerNode]
+
     def __init__(self, player: Player):
         self._player = player
         self._player_next_node = None

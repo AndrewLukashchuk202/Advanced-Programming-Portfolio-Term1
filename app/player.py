@@ -1,4 +1,7 @@
 class Player:
+    _player_id: str
+    _player_name: str
+
     def __init__(self, player_id: str, player_name: str):
         self._player_id = player_id
         self._player_name = player_name
