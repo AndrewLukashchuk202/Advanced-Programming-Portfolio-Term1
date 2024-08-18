@@ -75,3 +75,36 @@ class PlayerList:
         self._is_empty = self._head is None
 
         return deleted_node
+
+    def pop_by_uid(self, key: str) -> Optional[PlayerNode]:
+        if self._is_empty:
+            raise IndexError("List is empty")
+
+        current_node = self._head
+
+        while current_node is not None:
+            if current_node.key == key:
+
+                # situation where node is in between the head and the tail
+                if current_node.player_prev_node and current_node.player_next_node:
+                    current_node.player_prev_node.player_next_node = current_node.player_next_node
+                    current_node.player_next_node.player_prev_node = current_node.player_prev_node
+
+                    return current_node
+
+                # situation where node is a head
+                elif current_node.player_next_node:
+                    current_node.player_next_node.player_prev_node = None
+                    self._head = current_node.player_next_node
+
+                    return current_node
+
+                # situation where node is a tail
+                elif current_node.player_prev_node:
+                    current_node.player_prev_node.player_next_node = None
+                    self._tail = current_node.player_prev_node
+
+                    return current_node
+
+            current_node = current_node.player_next_node
+        raise ValueError("Value not found")

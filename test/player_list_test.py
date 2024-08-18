@@ -147,6 +147,88 @@ class PlayerListTest(unittest.TestCase):
 
         self.assertTrue(player_list.is_empty, "PlayerList should be empty when initialized")
 
+    def test_pop_by_uid_middle(self):
+        player1 = Player("1", "Andrew")
+        player2 = Player("2", "Rafael")
+        player3 = Player("3", "Sam")
+
+        player_node1 = PlayerNode(player1)
+        player_node2 = PlayerNode(player2)
+        player_node3 = PlayerNode(player3)
+
+        player_list = PlayerList()
+
+        player_list.push_back(player_node1)
+        player_list.push_back(player_node2)
+        player_list.push_back(player_node3)
+
+        removed_node = player_list.pop_by_uid("2")
+
+        self.assertEqual(removed_node, player_node2, "The removed node should be player_node2")
+        self.assertEqual(player_list.head, player_node1, "Head should still be player_node1")
+        self.assertEqual(player_list.tail, player_node3, "Tail should still be player_node3")
+        self.assertEqual(player_list.head.player_next_node, player_node3,
+                         "player_node1's next_node should be player_node3")
+        self.assertEqual(player_list.tail.player_prev_node, player_node1,
+                         "player_node3's previous_node should be player_node1")
+
+    def test_pop_by_uid_head(self):
+        player1 = Player("1", "Andrew")
+        player2 = Player("2", "Rafael")
+
+        player_node1 = PlayerNode(player1)
+        player_node2 = PlayerNode(player2)
+
+        player_list = PlayerList()
+
+        player_list.push_back(player_node1)
+        player_list.push_back(player_node2)
+
+        removed_node = player_list.pop_by_uid("1")
+
+        self.assertEqual(removed_node, player_node1, "The removed node should be player_node1")
+        self.assertEqual(player_list.head, player_node2, "Head should now be player_node2")
+        self.assertEqual(player_list.tail, player_node2, "Tail should also be player_node2")
+
+    def test_pop_by_uid_tail(self):
+        player1 = Player("1", "Andrew")
+        player2 = Player("2", "Rafael")
+
+        player_node1 = PlayerNode(player1)
+        player_node2 = PlayerNode(player2)
+
+        player_list = PlayerList()
+
+        player_list.push_back(player_node1)
+        player_list.push_back(player_node2)
+
+        removed_node = player_list.pop_by_uid("2")
+
+        self.assertEqual(removed_node, player_node2, "The removed node should be player_node2")
+        self.assertEqual(player_list.head, player_node1, "Head should still be player_node1")
+        self.assertEqual(player_list.tail, player_node1, "Tail should also be player_node1")
+
+    def test_pop_by_uid_empty_list(self):
+        player_list = PlayerList()
+
+        with self.assertRaises(IndexError, msg="List is empty"):
+            player_list.pop_by_uid("1")
+
+    def test_pop_by_uid_not_found(self):
+        player1 = Player("1", "Andrew")
+        player2 = Player("2", "Rafael")
+
+        player_node1 = PlayerNode(player1)
+        player_node2 = PlayerNode(player2)
+
+        player_list = PlayerList()
+
+        player_list.push_back(player_node1)
+        player_list.push_back(player_node2)
+
+        with self.assertRaises(ValueError, msg="Value not found"):
+            player_list.pop_by_uid("3")
+
 
 if __name__ == "__main__":
     unittest.main()
