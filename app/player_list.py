@@ -25,7 +25,7 @@ class PlayerList:
         return self._tail
 
     def push_front(self, player_node: PlayerNode):
-        if self.is_empty:
+        if self._is_empty:
             self._head = self._tail = player_node
             self._is_empty = False
         else:
@@ -34,7 +34,7 @@ class PlayerList:
             self._head = player_node
 
     def push_back(self, player_node: PlayerNode):
-        if self.is_empty:
+        if self._is_empty:
             self._head = self._tail = player_node
             self._is_empty = False
         else:
@@ -42,3 +42,36 @@ class PlayerList:
             self._tail.player_next_node = player_node
             self._tail = player_node
 
+    def pop_front(self) -> Optional[PlayerNode]:
+        if self._is_empty:
+            raise IndexError("List is empty")
+
+        deleted_node = self._head
+
+        if self._head == self._tail:
+            self._head = None
+            self._tail = None
+        else:
+            self._head.player_next_node.player_prev_node = None
+            self._head = self._head.player_next_node
+
+        self._is_empty = self._head is None
+
+        return deleted_node
+
+    def pop_back(self) -> Optional[PlayerNode]:
+        if self._is_empty:
+            raise IndexError("List is empty")
+
+        deleted_node = self._tail
+
+        if self._head == self._tail:
+            self._head = None
+            self._tail = None
+        else:
+            self._tail.player_prev_node.player_next_node = None
+            self._tail = self._tail.player_prev_node
+
+        self._is_empty = self._head is None
+
+        return deleted_node

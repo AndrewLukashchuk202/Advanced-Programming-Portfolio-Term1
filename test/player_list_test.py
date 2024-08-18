@@ -8,11 +8,8 @@ class PlayerListTest(unittest.TestCase):
 
     def test_push_front_single_node(self):
         player = Player("1", "Andrew")
-
         player_node = PlayerNode(player)
-
         player_list = PlayerList()
-
         player_list.push_front(player_node)
 
         self.assertFalse(player_list.is_empty, "PlayerList should not be empty after push_forward")
@@ -45,11 +42,8 @@ class PlayerListTest(unittest.TestCase):
 
     def test_push_back_single_node(self):
         player = Player("1", "Andrew")
-
         player_node = PlayerNode(player)
-
         player_list = PlayerList()
-
         player_list.push_back(player_node)
 
         self.assertFalse(player_list.is_empty, "PlayerList should not be empty after push_back")
@@ -75,6 +69,78 @@ class PlayerListTest(unittest.TestCase):
                          f"Expected tail to be {player_node2}, but got {player_list.tail}")
         self.assertEqual(player_list.tail.player_prev_node, player_node1,
                          "Tail node's previous_node should be player_node1")
+
+    def test_pop_front_from_empty_list(self):
+        player_list = PlayerList()
+        with self.assertRaises(IndexError, msg="List is empty"):
+            player_list.pop_front()
+
+    def test_pop_front_single_node(self):
+        player = Player("1", "Andrew")
+        player_node = PlayerNode(player)
+        player_list = PlayerList()
+        player_list.push_front(player_node)
+
+        removed_node = player_list.pop_front()
+
+        self.assertEqual(removed_node, player_node, "Removed node should be the node that was pushed.")
+        self.assertTrue(player_list.is_empty, "List should be empty after removing the only node.")
+        self.assertIsNone(player_list.head, "Head should be None after removing the only node.")
+        self.assertIsNone(player_list.tail, "Tail should be None after removing the only node.")
+
+    def test_pop_front_multiple_nodes(self):
+        player1 = Player("1", "Andrew")
+        player2 = Player("2", "Rafael")
+
+        player_node1 = PlayerNode(player1)
+        player_node2 = PlayerNode(player2)
+
+        player_list = PlayerList()
+        player_list.push_front(player_node1)
+        player_list.push_front(player_node2)
+
+        removed_node = player_list.pop_front()
+
+        self.assertEqual(removed_node, player_node2, "Removed node should be the node that was pushed last.")
+        self.assertEqual(player_list.head, player_node1, "Head should be the previous node after removal.")
+        self.assertEqual(player_list.tail, player_node1, "Tail should remain unchanged after removal.")
+        self.assertIsNone(player_list.head.player_prev_node, "Head node's previous_node should be None.")
+
+    def test_pop_back_empty_list(self):
+        player_list = PlayerList()
+        with self.assertRaises(IndexError, msg="List is empty"):
+            player_list.pop_back()
+
+    def test_pop_back_single_node(self):
+        player = Player("1", "Andrew")
+        player_node = PlayerNode(player)
+        player_list = PlayerList()
+        player_list.push_back(player_node)
+
+        removed_node = player_list.pop_back()
+
+        self.assertEqual(removed_node, player_node, "Removed node should be the node that was pushed.")
+        self.assertTrue(player_list.is_empty, "List should be empty after removing the only node.")
+        self.assertIsNone(player_list.head, "Head should be None after removing the only node.")
+        self.assertIsNone(player_list.tail, "Tail should be None after removing the only node.")
+
+    def test_pop_back_multiple_nodes(self):
+        player1 = Player("1", "Andrew")
+        player2 = Player("2", "Rafael")
+
+        player_node1 = PlayerNode(player1)
+        player_node2 = PlayerNode(player2)
+
+        player_list = PlayerList()
+        player_list.push_back(player_node1)
+        player_list.push_back(player_node2)
+
+        removed_node = player_list.pop_back()
+
+        self.assertEqual(removed_node, player_node2, "Removed node should be the node that was pushed last.")
+        self.assertEqual(player_list.head, player_node1, "Head should remain unchanged after removal.")
+        self.assertEqual(player_list.tail, player_node1, "Tail should be the previous node after removal.")
+        self.assertIsNone(player_list.tail.player_next_node, "Tail node's next_node should be None.")
 
     def test_empty_list(self):
         player_list = PlayerList()
