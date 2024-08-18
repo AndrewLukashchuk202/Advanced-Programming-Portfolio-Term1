@@ -22,7 +22,7 @@ class PlayerNode:
         return self._player_next_node
 
     @player_next_node.setter
-    def player_next_node(self, player_next_node: PlayerNode):
+    def player_next_node(self, player_next_node: Optional[PlayerNode]):
         self._player_next_node = player_next_node
 
     @property
@@ -30,7 +30,7 @@ class PlayerNode:
         return self._player_prev_node
 
     @player_prev_node.setter
-    def player_prev_node(self, player_prev_node: PlayerNode):
+    def player_prev_node(self, player_prev_node: Optional[PlayerNode]):
         self._player_prev_node = player_prev_node
 
     @property
@@ -44,6 +44,6 @@ class PlayerNode:
 
 
 if __name__ == '__main__':
-    player1 = Player("3", "32")
+    player1 = Player("3", "Andrew")
     player_node = PlayerNode(player1)
     print(player_node.__str__())

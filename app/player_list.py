@@ -1,5 +1,6 @@
 from typing import Optional
 from player_node import PlayerNode
+from player import Player
 
 
 class PlayerList:
@@ -24,7 +25,7 @@ class PlayerList:
     def tail(self) -> Optional[PlayerNode]:
         return self._tail
 
-    def push_front(self, player_node: PlayerNode):
+    def push_front(self, player_node: Optional[PlayerNode]):
         if self._is_empty:
             self._head = self._tail = player_node
             self._is_empty = False
@@ -33,7 +34,7 @@ class PlayerList:
             self._head.player_prev_node = player_node
             self._head = player_node
 
-    def push_back(self, player_node: PlayerNode):
+    def push_back(self, player_node: Optional[PlayerNode]):
         if self._is_empty:
             self._head = self._tail = player_node
             self._is_empty = False
@@ -90,21 +91,43 @@ class PlayerList:
                     current_node.player_prev_node.player_next_node = current_node.player_next_node
                     current_node.player_next_node.player_prev_node = current_node.player_prev_node
 
-                    return current_node
-
                 # situation where node is a head
                 elif current_node.player_next_node:
                     current_node.player_next_node.player_prev_node = None
                     self._head = current_node.player_next_node
-
-                    return current_node
 
                 # situation where node is a tail
                 elif current_node.player_prev_node:
                     current_node.player_prev_node.player_next_node = None
                     self._tail = current_node.player_prev_node
 
-                    return current_node
+                self._is_empty = self._head is None
+                return current_node
 
             current_node = current_node.player_next_node
         raise ValueError("Value not found")
+
+    def display(self, forward=True):
+        if forward:
+            current_node = self._head
+            next_attr = "player_next_node"
+        else:
+            current_node = self._tail
+            next_attr = "player_previous_node"
+
+        while current_node is not None:
+            print(current_node)
+            current_node = getattr(current_node, next_attr)
+
+
+if __name__ == '__main__':
+    player1 = Player("1", "Andrew")
+    player2 = Player("2", "Rafael")
+    player_node1 = PlayerNode(player1)
+    player_node2 = PlayerNode(player2)
+    player_list = PlayerList()
+
+    player_list.push_front(player_node1)
+    player_list.push_front(player_node2)
+
+    player_list.display()
