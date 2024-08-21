@@ -4,28 +4,100 @@ from player import Player
 
 
 class PlayerList:
+    """
+    A doubly linked list implementation for managing PlayerNodes.
+
+    Attributes:
+    -----------
+    _head : Optional[PlayerNode]
+        The first node in the list, or None if the list is empty.
+    _tail : Optional[PlayerNode]
+        The last node in the list, or None if the list is empty.
+    _is_empty : bool
+        Indicates whether the list is empty.
+    """
+
     _head: Optional[PlayerNode]
     _tail: Optional[PlayerNode]
     _is_empty: bool
 
     def __init__(self):
+        """
+        Initializes an empty PlayerList with no head, tail, and sets the list as empty.
+        """
         self._head = None
         self._tail = None
         self._is_empty = True
 
     @property
     def is_empty(self) -> bool:
+        """
+        Returns whether the list is empty.
+
+        Returns:
+        --------
+        bool
+            True if the list is empty, False otherwise.
+        """
         return self._is_empty
 
     @property
     def head(self) -> Optional[PlayerNode]:
+        """
+        Returns the head node of the list.
+
+        Returns:
+        --------
+        Optional[PlayerNode]
+            The first node in the list, or None if the list is empty.
+        """
         return self._head
 
     @property
     def tail(self) -> Optional[PlayerNode]:
+        """
+        Returns the tail node of the list.
+
+        Returns:
+        --------
+        Optional[PlayerNode]
+            The last node in the list, or None if the list is empty.
+        """
         return self._tail
 
+    def can_add_node(self, new_node: Optional[PlayerNode]) -> bool:
+        """
+        Checks if a node can be added to the list by ensuring there are no duplicates.
+
+        Parameters:
+        -----------
+        new_node : Optional[PlayerNode]
+            The node to check for duplication.
+
+        Returns:
+        --------
+        bool
+            True if the node can be added (i.e., it is not a duplicate), False otherwise.
+        """
+        return not any(filter(new_node.equals, self.iterate()))
+
     def push_front(self, player_node: Optional[PlayerNode]):
+        """
+        Adds a node to the front of the list.
+
+        Parameters:
+        -----------
+        player_node : Optional[PlayerNode]
+            The node to add to the front of the list.
+
+        Raises:
+        -------
+        ValueError:
+            If the node already exists in the list.
+        """
+        if not self.can_add_node(player_node):
+            raise ValueError(f"Player or PlayerNode already exists in the list with uid{player_node.key}")
+
         if self._is_empty:
             self._head = self._tail = player_node
             self._is_empty = False
@@ -35,6 +107,22 @@ class PlayerList:
             self._head = player_node
 
     def push_back(self, player_node: Optional[PlayerNode]):
+        """
+        Adds a node to the end of the list.
+
+        Parameters:
+        -----------
+        player_node : Optional[PlayerNode]
+            The node to add to the end of the list.
+
+        Raises:
+        -------
+        ValueError:
+            If the node already exists in the list.
+        """
+        if not self.can_add_node(player_node):
+            raise ValueError(f"Player or PlayerNode already exists in the list with uid{player_node.key}")
+
         if self._is_empty:
             self._head = self._tail = player_node
             self._is_empty = False
@@ -44,6 +132,19 @@ class PlayerList:
             self._tail = player_node
 
     def pop_front(self) -> Optional[PlayerNode]:
+        """
+        Removes and returns the node at the front of the list.
+
+        Returns:
+        --------
+        Optional[PlayerNode]
+            The node that was removed from the front of the list.
+
+        Raises:
+        -------
+        IndexError:
+            If the list is empty.
+        """
         if self._is_empty:
             raise IndexError("List is empty")
 
@@ -54,6 +155,7 @@ class PlayerList:
             self._tail = None
         else:
             self._head.player_next_node.player_prev_node = None
+            self._head.player_next_node = None  # actually clearing the next reference to the node for the deleted node
             self._head = self._head.player_next_node
 
         self._is_empty = self._head is None
@@ -61,6 +163,19 @@ class PlayerList:
         return deleted_node
 
     def pop_back(self) -> Optional[PlayerNode]:
+        """
+        Removes and returns the node at the end of the list.
+
+        Returns:
+        --------
+        Optional[PlayerNode]
+            The node that was removed from the end of the list.
+
+        Raises:
+        -------
+        IndexError:
+            If the list is empty.
+        """
         if self._is_empty:
             raise IndexError("List is empty")
 
@@ -71,6 +186,7 @@ class PlayerList:
             self._tail = None
         else:
             self._tail.player_prev_node.player_next_node = None
+            self._tail.player_prev_node = None  # clearing the prev reference to the node for the deleted node
             self._tail = self._tail.player_prev_node
 
         self._is_empty = self._head is None
@@ -78,6 +194,26 @@ class PlayerList:
         return deleted_node
 
     def pop_by_uid(self, key: str) -> Optional[PlayerNode]:
+        """
+        Removes and returns a node with the specified unique ID (key).
+
+        Parameters:
+        -----------
+        key : str
+            The unique ID of the node to remove.
+
+        Returns:
+        --------
+        Optional[PlayerNode]
+            The node that was removed.
+
+        Raises:
+        -------
+        IndexError:
+            If the list is empty.
+        ValueError:
+            If no node with the given ID is found.
+        """
         if self._is_empty:
             raise IndexError("List is empty")
 
@@ -90,15 +226,23 @@ class PlayerList:
                 if current_node.player_prev_node and current_node.player_next_node:
                     current_node.player_prev_node.player_next_node = current_node.player_next_node
                     current_node.player_next_node.player_prev_node = current_node.player_prev_node
+                    # actually clearing the next reference to the node for the deleted node
+                    current_node.player_prev_node = None
+                    # clearing the prev reference to the node for the deleted node
+                    current_node.player_next_node = None
 
                 # situation where node is a head
                 elif current_node.player_next_node:
                     current_node.player_next_node.player_prev_node = None
+                    # actually clearing next reference to the node for the deleted node
+                    current_node.player_next_node = None
                     self._head = current_node.player_next_node
 
                 # situation where node is a tail
                 elif current_node.player_prev_node:
                     current_node.player_prev_node.player_next_node = None
+                    # actually clearing the prev reference to the node for the deleted node
+                    current_node.player_prev_node = None
                     self._tail = current_node.player_prev_node
 
                 self._is_empty = self._head is None
@@ -107,7 +251,43 @@ class PlayerList:
             current_node = current_node.player_next_node
         raise ValueError("Value not found")
 
+    def iterate(self, forward: bool = True):
+        """
+        Iterates over the nodes in the list.
+
+        Parameters:
+        -----------
+        forward : bool
+            If True, iterates from head to tail; otherwise, from tail to head.
+
+        Yields:
+        -------
+        PlayerNode
+            The nodes in the list, one at a time.
+        """
+        direction = self._head if forward else self._tail
+
+        while direction is not None:
+            yield direction
+            direction = direction.player_next_node if forward else direction.player_prev_node
+
     def display(self, forward=True):
+        """
+        Prints the nodes in the list.
+
+        Parameters:
+        -----------
+        forward : bool
+            If True, prints from head to tail; otherwise, from tail to head.
+
+        Raises:
+        -------
+        ValueError:
+            If the list is empty.
+        """
+        if self._is_empty:
+            raise ValueError("List is empty!")
+
         if forward:
             current_node = self._head
             next_attr = "player_next_node"

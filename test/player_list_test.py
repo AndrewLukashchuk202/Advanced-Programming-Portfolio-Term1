@@ -229,6 +229,32 @@ class PlayerListTest(unittest.TestCase):
         with self.assertRaises(ValueError, msg="Value not found"):
             player_list.pop_by_uid("3")
 
+    def test_add_duplicate_player_node_by_uid(self):
+        player1 = Player("1", "Alice")
+        player2 = Player("1", "Bob")  # Same UID as player1
+
+        node1 = PlayerNode(player1)
+        node2 = PlayerNode(player2)
+
+        player_list = PlayerList()
+
+        player_list.push_front(node1)
+
+        with self.assertRaises(ValueError):
+            player_list.push_front(node2)
+
+    def test_add_duplicate_player_node_same_object(self):
+        player = Player("4", "David")
+
+        node = PlayerNode(player)
+
+        player_list = PlayerList()
+
+        player_list.push_front(node)
+
+        with self.assertRaises(ValueError):
+            player_list.push_front(node)
+
 
 if __name__ == "__main__":
     unittest.main()
