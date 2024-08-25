@@ -164,6 +164,7 @@ class PlayerListTest(unittest.TestCase):
 
         removed_node = player_list.pop_by_uid("2")
 
+        self.assertEqual(len(player_list), 2)
         self.assertEqual(removed_node, player_node2, "The removed node should be player_node2")
         self.assertEqual(player_list.head, player_node1, "Head should still be player_node1")
         self.assertEqual(player_list.tail, player_node3, "Tail should still be player_node3")
@@ -186,6 +187,7 @@ class PlayerListTest(unittest.TestCase):
 
         removed_node = player_list.pop_by_uid("1")
 
+        self.assertEqual(len(player_list), 1)
         self.assertEqual(removed_node, player_node1, "The removed node should be player_node1")
         self.assertEqual(player_list.head, player_node2, "Head should now be player_node2")
         self.assertEqual(player_list.tail, player_node2, "Tail should also be player_node2")
@@ -204,6 +206,7 @@ class PlayerListTest(unittest.TestCase):
 
         removed_node = player_list.pop_by_uid("2")
 
+        self.assertEqual(len(player_list), 1)
         self.assertEqual(removed_node, player_node2, "The removed node should be player_node2")
         self.assertEqual(player_list.head, player_node1, "Head should still be player_node1")
         self.assertEqual(player_list.tail, player_node1, "Tail should also be player_node1")

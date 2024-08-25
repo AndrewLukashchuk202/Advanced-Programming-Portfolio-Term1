@@ -15,11 +15,14 @@ class PlayerList:
         The last node in the list, or None if the list is empty.
     _is_empty : bool
         Indicates whether the list is empty.
+    _length: int
+        Keeps track of PlayerList size
     """
 
     _head: Optional[PlayerNode]
     _tail: Optional[PlayerNode]
     _is_empty: bool
+    _length: int
 
     def __init__(self):
         """
@@ -28,6 +31,16 @@ class PlayerList:
         self._head = None
         self._tail = None
         self._is_empty = True
+        self._length = 0
+
+    def __len__(self) -> int:
+        """
+        Returns the number of PlayerNode objects currently in the PlayerList.
+
+        Returns:
+            int: The number of PlayerNode objects in the PlayerList.
+        """
+        return self._length
 
     @property
     def is_empty(self) -> bool:
@@ -106,6 +119,8 @@ class PlayerList:
             self._head.player_prev_node = player_node
             self._head = player_node
 
+        self._length += 1
+
     def push_back(self, player_node: Optional[PlayerNode]):
         """
         Adds a node to the end of the list.
@@ -130,6 +145,8 @@ class PlayerList:
             player_node.player_prev_node = self._tail
             self._tail.player_next_node = player_node
             self._tail = player_node
+
+        self._length += 1
 
     def pop_front(self) -> Optional[PlayerNode]:
         """
@@ -159,6 +176,8 @@ class PlayerList:
             self._head = self._head.player_next_node
 
         self._is_empty = self._head is None
+
+        self._length -= 1
 
         return deleted_node
 
@@ -190,6 +209,8 @@ class PlayerList:
             self._tail = self._tail.player_prev_node
 
         self._is_empty = self._head is None
+
+        self._length -= 1
 
         return deleted_node
 
@@ -234,18 +255,23 @@ class PlayerList:
                 # situation where node is a head
                 elif current_node.player_next_node:
                     current_node.player_next_node.player_prev_node = None
+                    self._head = current_node.player_next_node
                     # actually clearing next reference to the node for the deleted node
                     current_node.player_next_node = None
-                    self._head = current_node.player_next_node
 
                 # situation where node is a tail
                 elif current_node.player_prev_node:
                     current_node.player_prev_node.player_next_node = None
+                    self._tail = current_node.player_prev_node
                     # actually clearing the prev reference to the node for the deleted node
                     current_node.player_prev_node = None
-                    self._tail = current_node.player_prev_node
+
+                # situation where node is a head and tail at the same time
+                elif current_node == self._head and current_node == self._tail:
+                    self._head = self._tail = None
 
                 self._is_empty = self._head is None
+                self._length -= 1
                 return current_node
 
             current_node = current_node.player_next_node
@@ -298,6 +324,14 @@ class PlayerList:
         while current_node is not None:
             print(current_node)
             current_node = getattr(current_node, next_attr)
+
+    def find_node_by_key(self, uid: str) -> Optional[PlayerNode]:
+        current = self._head
+        while current:
+            if current.key == uid:
+                return current
+            current = current.player_next_node
+        return None
 
 
 if __name__ == '__main__':

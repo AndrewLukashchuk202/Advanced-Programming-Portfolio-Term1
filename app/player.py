@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 class Player:
     """
        Represents a player with a unique ID and a name.
@@ -63,6 +66,25 @@ class Player:
         """
         return self._player_name
 
+    @name.setter
+    def name(self, player_name: str):
+        self._player_name = player_name
+
+    @staticmethod
+    def sum_of_ascii_values(key: str | Player) -> int:
+        if isinstance(key, Player):
+            key = key.uid
+        elif not isinstance(key, str):
+            raise TypeError("Key must be a string or a Player object")
+
+        return sum(ord(char) for char in key)
+
+    def __hash__(self) -> int:
+        return self.sum_of_ascii_values(self.uid)
+
+    def __eq__(self, other) -> bool:
+        return isinstance(other, Player) and self.uid == other.uid
+
     def __str__(self) -> str:
         """
         Returns a string representation of the Player instance.
@@ -77,3 +99,5 @@ class Player:
         """
         return (f"Player(player_name={self.name}, "
                 f"player_id={self.uid})")
+
+print(bin(Player.sum_of_ascii_values("12342Anrw25")))
