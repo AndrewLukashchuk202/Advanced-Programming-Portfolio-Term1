@@ -100,4 +100,5 @@ class Player:
         return (f"Player(player_name={self.name}, "
                 f"player_id={self.uid})")
 
+
 print(bin(Player.sum_of_ascii_values("12342Anrw25")))

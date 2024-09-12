@@ -19,8 +19,8 @@ class PlayerList:
         Keeps track of PlayerList size
     """
 
-    _head: Optional[PlayerNode]
-    _tail: Optional[PlayerNode]
+    _head: PlayerNode | None = None
+    _tail: PlayerNode | None = None
     _is_empty: bool
     _length: int
 
@@ -55,7 +55,7 @@ class PlayerList:
         return self._is_empty
 
     @property
-    def head(self) -> Optional[PlayerNode]:
+    def head(self) -> PlayerNode | None:
         """
         Returns the head node of the list.
 
@@ -67,7 +67,7 @@ class PlayerList:
         return self._head
 
     @property
-    def tail(self) -> Optional[PlayerNode]:
+    def tail(self) -> PlayerNode | None:
         """
         Returns the tail node of the list.
 
@@ -78,7 +78,7 @@ class PlayerList:
         """
         return self._tail
 
-    def can_add_node(self, new_node: Optional[PlayerNode]) -> bool:
+    def can_add_node(self, new_node: PlayerNode | None = None) -> bool:
         """
         Checks if a node can be added to the list by ensuring there are no duplicates.
 
@@ -94,7 +94,7 @@ class PlayerList:
         """
         return not any(filter(new_node.equals, self.iterate()))
 
-    def push_front(self, player_node: Optional[PlayerNode]):
+    def push_front(self, player_node: PlayerNode | None = None):
         """
         Adds a node to the front of the list.
 
@@ -121,7 +121,7 @@ class PlayerList:
 
         self._length += 1
 
-    def push_back(self, player_node: Optional[PlayerNode]):
+    def push_back(self, player_node: PlayerNode | None = None):
         """
         Adds a node to the end of the list.
 
@@ -148,7 +148,7 @@ class PlayerList:
 
         self._length += 1
 
-    def pop_front(self) -> Optional[PlayerNode]:
+    def pop_from_front(self) -> PlayerNode | None:
         """
         Removes and returns the node at the front of the list.
 
@@ -172,8 +172,8 @@ class PlayerList:
             self._tail = None
         else:
             self._head.player_next_node.player_prev_node = None
-            self._head.player_next_node = None  # actually clearing the next reference to the node for the deleted node
             self._head = self._head.player_next_node
+            self._head.player_next_node = None  # actually clearing the next reference to the node for the deleted node
 
         self._is_empty = self._head is None
 
@@ -181,7 +181,7 @@ class PlayerList:
 
         return deleted_node
 
-    def pop_back(self) -> Optional[PlayerNode]:
+    def pop_from_back(self) -> PlayerNode | None:
         """
         Removes and returns the node at the end of the list.
 
@@ -205,8 +205,8 @@ class PlayerList:
             self._tail = None
         else:
             self._tail.player_prev_node.player_next_node = None
-            self._tail.player_prev_node = None  # clearing the prev reference to the node for the deleted node
             self._tail = self._tail.player_prev_node
+            self._tail.player_prev_node = None  # clearing the prev reference to the node for the deleted node
 
         self._is_empty = self._head is None
 
@@ -214,7 +214,7 @@ class PlayerList:
 
         return deleted_node
 
-    def pop_by_uid(self, key: str) -> Optional[PlayerNode]:
+    def pop_by_uid(self, key: str) -> PlayerNode | None:
         """
         Removes and returns a node with the specified unique ID (key).
 

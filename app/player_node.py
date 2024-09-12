@@ -17,8 +17,8 @@ class PlayerNode:
         A reference to the previous node in the linked list.
     """
     _player = Player
-    _player_next_node: Optional[PlayerNode]
-    _player_prev_node: Optional[PlayerNode]
+    _player_next_node: PlayerNode | None
+    _player_prev_node: PlayerNode | None
 
     def __init__(self, player: Player):
         """
@@ -54,7 +54,7 @@ class PlayerNode:
         return self._player
 
     @property
-    def player_next_node(self) -> Optional[PlayerNode]:
+    def player_next_node(self) -> PlayerNode | None:
         """
        Returns the next node in the linked list.
 
@@ -66,7 +66,7 @@ class PlayerNode:
         return self._player_next_node
 
     @player_next_node.setter
-    def player_next_node(self, player_next_node: Optional[PlayerNode]):
+    def player_next_node(self, player_next_node: PlayerNode | None = None):
         """
         Sets the reference to the next node in the linked list.
 
@@ -78,7 +78,7 @@ class PlayerNode:
         self._player_next_node = player_next_node
 
     @property
-    def player_prev_node(self) -> Optional[PlayerNode]:
+    def player_prev_node(self) -> PlayerNode | None:
         """
        Returns the previous node in the linked list.
 
@@ -90,7 +90,7 @@ class PlayerNode:
         return self._player_prev_node
 
     @player_prev_node.setter
-    def player_prev_node(self, player_prev_node: Optional[PlayerNode]):
+    def player_prev_node(self, player_prev_node: PlayerNode | None = None):
         """
         Sets the reference to the previous node in the linked list.
 
