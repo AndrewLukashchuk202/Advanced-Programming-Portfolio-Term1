@@ -17,8 +17,8 @@ class PlayerNode:
         A reference to the previous node in the linked list.
     """
     _player = Player
-    _player_next_node: PlayerNode | None
-    _player_prev_node: PlayerNode | None
+    _next_node: PlayerNode | None
+    _previous_node: PlayerNode | None
 
     def __init__(self, player: Player):
         """
@@ -38,8 +38,8 @@ class PlayerNode:
             raise ValueError("Must provide Player instance!")
 
         self._player = player
-        self._player_next_node = None
-        self._player_prev_node = None
+        self._next_node = None
+        self._previous_node = None
 
     @property
     def player(self) -> Player:
@@ -63,7 +63,7 @@ class PlayerNode:
        Optional[PlayerNode]
            The next PlayerNode in the list, or None if this is the last node.
        """
-        return self._player_next_node
+        return self._next_node
 
     @player_next_node.setter
     def player_next_node(self, player_next_node: PlayerNode | None = None):
@@ -75,7 +75,7 @@ class PlayerNode:
         player_next_node : Optional[PlayerNode]
             The next PlayerNode in the list, or None if this is the last node.
         """
-        self._player_next_node = player_next_node
+        self._next_node = player_next_node
 
     @property
     def player_prev_node(self) -> PlayerNode | None:
@@ -87,7 +87,7 @@ class PlayerNode:
        Optional[PlayerNode]
            The previous PlayerNode in the list, or None if this is the first node.
        """
-        return self._player_prev_node
+        return self._previous_node
 
     @player_prev_node.setter
     def player_prev_node(self, player_prev_node: PlayerNode | None = None):
@@ -99,7 +99,7 @@ class PlayerNode:
         player_prev_node : Optional[PlayerNode]
             The previous PlayerNode in the list, or None if this is the first node.
         """
-        self._player_prev_node = player_prev_node
+        self._previous_node = player_prev_node
 
     @property
     def key(self) -> str:
@@ -133,9 +133,7 @@ class PlayerNode:
            True if the nodes are considered equal, False otherwise.
        """
         if isinstance(other, PlayerNode):
-            return (self == other or
-                    self.player == other.player or
-                    self.key == other.key)
+            return any([self == other, self.player == other.player, self.key == other.key])
 
         return False
 
@@ -153,10 +151,11 @@ class PlayerNode:
            'PlayerNode(player=<Player>, next_node_id=<id>, prev_node_id=<id>)'.
        """
         return (f"PlayerNode(player={self._player}, "
-                f"next_node_id={id(self._player_next_node)}, "
-                f"prev_node_id={id(self._player_prev_node)})")
+                f"next_node_id={id(self._next_node)}, "
+                f"prev_node_id={id(self._previous_node)})")
 
 
+# Only for test purposes
 if __name__ == '__main__':
     player1 = Player("3", "Andrew")
     player_node = PlayerNode(player1)

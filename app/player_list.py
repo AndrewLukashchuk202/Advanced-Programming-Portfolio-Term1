@@ -19,8 +19,8 @@ class PlayerList:
         Keeps track of PlayerList size
     """
 
-    _head: PlayerNode | None = None
-    _tail: PlayerNode | None = None
+    _head: PlayerNode | None
+    _tail: PlayerNode | None
     _is_empty: bool
     _length: int
 
@@ -334,6 +334,7 @@ class PlayerList:
         return None
 
 
+# Only for test purposes
 if __name__ == '__main__':
     player1 = Player("1", "Andrew")
     player2 = Player("2", "Rafael")

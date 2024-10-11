@@ -1,5 +1,5 @@
 from __future__ import annotations
-from collections import abc
+from collections import Iterable
 import random
 
 
@@ -105,7 +105,7 @@ class Player:
         self._player_name = player_name
 
     @staticmethod
-    def quicksort_descending(collection: abc.Iterable) -> list:
+    def quicksort_descending(collection: Iterable) -> list:
         """
         Sorts a collection of elements in descending order using the quicksort algorithm.
 
@@ -221,6 +221,7 @@ class Player:
                 f"player_id={self.uid})")
 
 
+# Only for test purposes
 if __name__ == '__main__':
     # print(bin(Player.sum_of_ascii_values("12342Anrw25")))
 
@@ -231,5 +232,3 @@ if __name__ == '__main__':
 
     arr = random.sample(range(20), 20)
     print(Player.quicksort_descending(arr))
-
-
