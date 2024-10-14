@@ -42,3 +42,29 @@ class PlayerBSTTest(unittest.TestCase):
         self.assertEqual(self.player_bst.root.right.player.name, "Rafael")
         self.assertEqual(self.player_bst.root.right.left.player.name, "Donatello")
         self.assertEqual(self.player_bst.root.right.left.right.player.name, "Michelangelo")
+
+    def test_search_player_found(self):
+        self.player_bst.insert(self.player1)
+        self.player_bst.insert(self.player2)
+        self.player_bst.insert(self.player3)
+        self.player_bst.insert(self.player4)
+
+        found_player = self.player_bst.search("Michelangelo")
+
+        self.assertEqual(found_player, self.player4)
+
+    def test_search_player_not_found(self):
+        self.player_bst.insert(self.player1)
+
+        result = self.player_bst.search("Rafael")
+
+        self.assertIsNone(result)
+
+    def test_search_updated_existing_player(self):
+        self.player_bst.insert(self.player1)
+        updated_player = Player("10", "Andrew", 3)
+
+        self.player_bst.insert(updated_player)
+
+        result = self.player_bst.search("Andrew")
+        self.assertEqual(result, updated_player)
