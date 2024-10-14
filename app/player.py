@@ -1,5 +1,5 @@
 from __future__ import annotations
-from collections import Iterable
+from collections.abc import Iterable
 import random
 
 
